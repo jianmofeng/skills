@@ -12,9 +12,6 @@ export namespace Print {
     /*箱规数 */
     boxQty: number
 
-    /*是否启用追溯, 1:是, 0:否 */
-    isTraceBack: number
-
     /*物料编码 */
     materialCode: string
 
@@ -55,70 +52,13 @@ export namespace Print {
     /* 总条数 */
     total: number
   }
-
-  export interface PrintRecord {
-    /*批次号 */
-    batchCode: string
-    /*箱规数 */
-    boxQty: number
-    /*工厂批号 */
-    factoryBatchCode: string
-    /*工厂编号 */
-    factoryCode: string
-    /*工厂id */
-    factoryId: number
-    /*工厂名称 */
-    factoryName: string
-    /*物料编码 */
-    materialCode: string
-    /*PO编码 */
-    poCode: string
-    /*追溯码/批次码 */
-    printCode: string
-    /*打印张数 */
-    printCount: number
-    /*业务主键ID */
-    printRecordId: number
-    /*打印时间 */
-    printTime: string
-    /*打印模版类型 1:追溯码 2:批次码 */
-    printType: number
-    /*生产日期 */
-    productionDate: string
-    /*产线编号 */
-    productionLineCode: string
-    /*产线id */
-    productionLineId: number
-    /*产线名称 */
-    productionLineName: string
-    /*推送失败原因 */
-    pushFailedReason: string
-    /*推送状态, 0:未推送 1:推送成功 2:推送失败 */
-    pushStatus: number
-    /*备注 */
-    remark: string
-    /*SKU编码 */
-    skuCode: string
-    /*规格简码 */
-    specSimpleCode: string
-    /*车间编号 */
-    workshopCode: string
-    /*车间id */
-    workshopId: number
-    /*车间名称 */
-    workshopName: string
-  }
-
-  export interface GenerateRes {
-    printRecordList: PrintRecord[]
-  }
 }
 ```
 
 ### 要点提炼
 
 - 使用 `export namespace Print { ... }` 将同一业务模块（打印相关）下的所有类型聚合在一个命名空间中。
-- 分离“列表项实体”（`SkuInfo`、`PrintRecord`）与“接口返回结构”（`GetSkuListPageRes`、`GenerateRes`）。
+- 分离“列表项实体”（`SkuInfo`）与“接口返回结构”（`GetSkuListPageRes`）。
 - 字段类型全部显式声明（string / number / boolean / array），避免 `any`。
 
 ---
@@ -134,66 +74,11 @@ import { Print } from '../types/print'
 export function getSkuList(data: any) {
   return http<HttpResponse<Print.GetSkuListPageRes>>({
     method: 'POST',
-    url: BuildUrl.LMS('/admin/sku/getSkuListPage'),
+    url: BuildUrl.LMS('/xxxx/xxx/getList'),
     data,
   })
 }
 
-/** 批次码生成导出调这个接口 */
-export function generateBatchCode(data: any) {
-  return http<HttpResponse<Print.GenerateRes>>({
-    method: 'POST',
-    url: BuildUrl.LMS('/admin/printRecord/generate'),
-    data,
-  })
-}
-
-/** 批次码打印 */
-export function printBatchCode(data: any) {
-  return http<HttpResponse<boolean>>({
-    method: 'POST',
-    url: BuildUrl.LMS('/admin/printRecord/savePrintRecord'),
-    data,
-  })
-}
-
-/** 数码导出，批量保存并推送wms */
-export function savePrintRecordList(data: any) {
-  return http<HttpResponse<boolean>>({
-    method: 'POST',
-    url: BuildUrl.LMS('/admin/printRecord/savePrintRecordList'),
-    data,
-    timeout: 1000 * 60 * 5,
-  })
-}
-
-/** 获取批次码列表 */
-export function getPrintRecordList(data: any) {
-  return http<HttpResponse<Print.GenerateRes>>({
-    method: 'POST',
-    url: BuildUrl.LMS('/admin/printRecord/getPrintRecordListPage'),
-    data,
-  })
-}
-
-/** 导出批次码 */
-export function exportPrintRecord(data: any) {
-  return http<HttpResponse<boolean>>({
-    method: 'POST',
-    url: BuildUrl.LMS('/admin/printRecord/exportPrintRecord'),
-    data,
-    responseType: 'blob',
-  })
-}
-
-/** 推送WMS */
-export function pushWMS(data: any) {
-  return http<HttpResponse<boolean>>({
-    method: 'POST',
-    url: BuildUrl.LMS('/admin/printRecord/pushToWMS'),
-    data,
-  })
-}
 ```
 
 ### 要点提炼
