@@ -1,0 +1,19 @@
+{
+  "skill_name": "git-branch-manager",
+  "display_name": "Git 分支管理器",
+  "description": "自动化管理 feature 分支到测试分支的映射和同步，从 feature/A 创建或更新对应的 feature/test/A 分支",
+  "category": "git-tools",
+  "version": "1.0.0",
+  "author": "global-config",
+  "language_requirement": "chinese",
+  "main_script": "scripts/branch_manager.js",
+  "fallback_script": "scripts/branch_manager.py",
+  "execution_context": "git-repository",
+  "permissions": [
+    "git-access",
+    "filesystem-read-write"
+  ],
+  "usage_example": [
+    "直接运行此技能将自动处理当前分支到对应测试分支的映射"
+  ]
+}

@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# 全局 Git 分支管理技能入口
+# 用于从当前 feature/A 分支创建或更新对应的 feature/test/A 分支
+
+SKILL_DIR="$HOME/.claude/skills/git-branch-manager"
+
+if [ ! -d "$SKILL_DIR" ]; then
+    echo "错误: 未找到 Git 分支管理技能"
+    exit 1
+fi
+
+cd "$SKILL_DIR"
+
+# 检查当前是否在 Git 仓库中
+if ! git rev-parse --git-dir > /dev/null 2>&1; then
+    echo "错误: 当前目录不是一个 Git 仓库"
+    exit 1
+fi
+
+echo "正在运行 Git 分支管理技能..."
+
+# 尝试运行 JS 版本，如果失败则尝试 Python 版本
+if [ -f "scripts/branch_manager.js" ]; then
+    if command -v node &> /dev/null; then
+        node scripts/branch_manager.js
+    else
+        if [ -f "scripts/branch_manager.py" ]; then
+            if command -v python3 &> /dev/null; then
+                python3 scripts/branch_manager.py
+            else
+                echo "错误: 未找到 Node.js 或 Python3 环境"
+                exit 1
+            fi
+        else
+            echo "错误: 未找到可用的脚本执行环境"
+            exit 1
+        fi
+    fi
+else
+    if [ -f "scripts/branch_manager.py" ]; then
+        if command -v python3 &> /dev/null; then
+            python3 scripts/branch_manager.py
+        else
+            echo "错误: 未找到 Python3 环境"
+            exit 1
+        fi
+    else
+        echo "错误: 未找到任何可执行脚本"
+        exit 1
+    fi
+fi
