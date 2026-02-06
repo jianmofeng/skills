@@ -1,4 +1,5 @@
 # 个人使用的Skills
+> 安装 `npx skills add https://github.com/jianmofeng/skills.git skills --skill api-generate` 
 ## api-generate 
 > 上传swagger.json，参考示例文件写法，让ai帮忙生成api结构和接口定义
 ### 使用场景
